@@ -22,7 +22,7 @@ describe(Caracteristica('Iniciar sesión'), () => {
         );
     });
 
-    it(Escenario('no entra con una contraseña incorrecta', '@acceso'), async () => {
+    it(Escenario('no entra con una contraseña incorrecta', '@smoke', '@acceso'), async () => {
         await actorCalled('Licho').attemptsTo(
             Dado('que #actor abrió MILA Invest', AbrirLaApp()),
             Cuando(

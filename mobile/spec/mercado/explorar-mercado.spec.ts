@@ -54,7 +54,7 @@ describe(Caracteristica('Explorar el mercado'), () => {
         );
     });
 
-    it(Escenario('abre el detalle de un instrumento', '@mercado'), async () => {
+    it(Escenario('abre el detalle de un instrumento', '@smoke', '@mercado'), async () => {
         await actorCalled('Licho').attemptsTo(
             Dado('que #actor inició sesión con la cuenta demo', AbrirLaApp(), IniciarSesion.conLaCuentaDemo()),
             Cuando('abre ISA desde el mercado', AbrirInstrumento.conId('ISA-CO')),

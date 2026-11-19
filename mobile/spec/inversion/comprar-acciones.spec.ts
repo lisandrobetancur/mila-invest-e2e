@@ -35,7 +35,7 @@ describe(Caracteristica('Comprar acciones a mercado'), () => {
         );
     });
 
-    it(Escenario('ve la comisión y el total antes de confirmar', '@inversion'), async () => {
+    it(Escenario('ve la comisión y el total antes de confirmar', '@smoke', '@inversion'), async () => {
         await actorCalled('Licho').attemptsTo(
             Dado(
                 'que #actor está armando una compra de 2 acciones de ISA',

@@ -16,7 +16,7 @@ describe(Caracteristica('Ver el detalle de un instrumento'), () => {
 
     const conSesion = [AbrirLaApp(), IniciarSesion.conLaCuentaDemo()];
 
-    it(Escenario('abre el detalle desde la lista', '@smoke', '@mercado'), async ({ actorCalled }) => {
+    it(Escenario('abre el detalle desde la lista', '@mercado'), async ({ actorCalled }) => {
         await actorCalled('Licho').attemptsTo(
             Dado('que #actor inició sesión con la cuenta demo', ...conSesion),
             Cuando('abre ISA desde el mercado', AbrirInstrumento.conId('ISA-CO')),

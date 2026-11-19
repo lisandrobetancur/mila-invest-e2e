@@ -17,7 +17,7 @@ describe(Caracteristica('Explorar el mercado'), () => {
     // Antecedentes: Licho entró con la cuenta demo y está en el mercado.
     const enElMercado = [AbrirLaApp(), IniciarSesion.conLaCuentaDemo(), AbrirElMercado()];
 
-    it(Escenario('filtra por país y la URL lo refleja', '@smoke', '@mercado'), async ({ actorCalled }) => {
+    it(Escenario('filtra por país y la URL lo refleja', '@mercado'), async ({ actorCalled }) => {
         await actorCalled('Licho').attemptsTo(
             Dado('que #actor está en el mercado', ...enElMercado),
             Cuando('filtra por Perú', FiltrarInstrumentos.porPais('PE')),

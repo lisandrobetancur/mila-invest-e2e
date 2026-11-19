@@ -25,7 +25,7 @@ describe(Caracteristica('Ajustar la app'), () => {
 
     const conSesion = [AbrirLaApp(), IniciarSesion.conLaCuentaDemo()];
 
-    it(Escenario('cambia el idioma sin reiniciar y sin tocar el formato de los montos', '@smoke', '@plataforma'), async ({ actorCalled }) => {
+    it(Escenario('cambia el idioma sin reiniciar y sin tocar el formato de los montos', '@plataforma'), async ({ actorCalled }) => {
         await actorCalled('Licho').attemptsTo(
             Dado('que #actor inició sesión con la cuenta demo', ...conSesion, EsperarA(Home.withData())),
             Y('anota su valor total', notes<Notas>().set('totalEnEspanol', AmountValue.of(Home.total()))),

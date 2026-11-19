@@ -21,7 +21,7 @@ import { Home } from '../../src/screenplay/ui/dashboard.ui';
 
 describe(Caracteristica('Un fallo a propósito (Android)'), () => {
 
-    it(Escenario('el valor total no es el que dice este escenario', '@fallo-demo'), async () => {
+    it(Escenario('el valor total no es el que dice este escenario', '@smoke', '@fallo-demo'), async () => {
         await actorCalled('Licho').attemptsTo(
             Dado('que #actor inició sesión con la cuenta demo', AbrirLaApp(), IniciarSesion.conLaCuentaDemo()),
             Cuando('mira el valor total de su cuenta', EsperarA(Home.total())),

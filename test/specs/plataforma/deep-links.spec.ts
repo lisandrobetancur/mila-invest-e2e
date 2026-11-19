@@ -14,7 +14,7 @@ import { InstrumentDetail } from '../../../src/screenplay/ui/market.ui';
 
 describe(Caracteristica('Abrir la app por un deep link'), () => {
 
-    it(Escenario('un deep link sin sesión pasa por el login y vuelve al instrumento', '@smoke', '@plataforma'), async ({ actorCalled }) => {
+    it(Escenario('un deep link sin sesión pasa por el login y vuelve al instrumento', '@plataforma'), async ({ actorCalled }) => {
         await actorCalled('Licho').attemptsTo(
             Dado('que #actor abre el link de ISA sin tener sesión', AbrirLaRuta('/market/instrument/ISA-CO')),
             Entonces(

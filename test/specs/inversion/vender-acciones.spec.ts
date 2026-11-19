@@ -36,7 +36,7 @@ describe(Caracteristica('Vender acciones a mercado'), () => {
         );
     });
 
-    it(Escenario('no puede vender más de lo que tiene', '@inversion'), async ({ actorCalled }) => {
+    it(Escenario('no puede vender más de lo que tiene', '@smoke', '@inversion'), async ({ actorCalled }) => {
         await actorCalled('Licho').attemptsTo(
             Dado('que #actor está vendiendo ECOPETROL', ...conSesion, AbrirElTicket.deVenta('ECOPETROL-CO')),
             Cuando('pide vender 500 acciones', IndicarLaCantidad.de(500)),
