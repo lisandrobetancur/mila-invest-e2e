@@ -79,7 +79,7 @@ lo hace CI.
 | `npm run test:smoke` | solo `@smoke` |
 | `npm run test:web:movil` / `test:web:escritorio` | un breakpoint a la vez |
 | `npm run test:web:full` | borra el reporte anterior, corre todo con fotos de cada paso y abre el reporte |
-| `npm run report:web` | abre el reporte web de la última corrida (http://127.0.0.1:8095) |
+| `npm run report:web` | abre el `index.html` del reporte web de la última corrida |
 | `npm run ids:sync` | regenera los ids desde el contrato de la app |
 | `npm run ids:check` | falla si los ids quedaron viejos (corre en CI) |
 | `npm run lint` / `typecheck` | ESLint y TypeScript |
@@ -95,8 +95,8 @@ Lo genera la **propia corrida**: no hay un paso aparte, ni CLI de Java, ni
 open reports/serenity-js/index.html
 ```
 
-`npm run report:web` hace lo mismo pero sirviéndolo en `http://localhost:<puerto>`,
-que es cómodo si lo querés ver desde otra máquina. Tiene la
+`npm run report:web` hace lo mismo. Para verlo desde otra máquina,
+`npx html-reporter serve --dir ./reports/serenity-js` lo sirve por HTTP. Tiene la
 jerarquía capacidad → característica → escenario, el árbol de actividades de
 cada escenario con sus pasos Dado/Cuando/Entonces, las capturas, el historial
 entre corridas y el análisis de consistencia (qué test se puso inestable).
@@ -117,7 +117,7 @@ así que conviene dejarlo para cuando lo necesites.
 
 `test:web:full` y `test:android:full` hacen todo de una: borran el reporte
 anterior, corren la suite con `MILA_PHOTOS=all` y, terminen verdes o rojos,
-levantan el reporte y lo abren en el navegador (Ctrl+C lo cierra). Incluyen
+abren el `index.html` del reporte en el navegador por defecto. Incluyen
 el escenario `@fallo-demo`, que falla a propósito para ver cómo se muestra
 un assert.
 
@@ -206,7 +206,7 @@ MILA_APP_PATH=../../dart/mila-invest-app npm run test:android
 | `npm run test:android` | toda la suite mobile |
 | `npm run test:android:smoke` | solo `@smoke` |
 | `npm run test:android:full` | borra el reporte anterior, corre todo con fotos de cada paso y abre el reporte |
-| `npm run report:android` | abre el reporte de Android (http://127.0.0.1:8096) |
+| `npm run report:android` | abre el `index.html` del reporte de Android |
 | `npm run typecheck:android` | tipos de la suite mobile |
 
 El reporte es el mismo de Serenity/JS pero **independiente**: la suite web
