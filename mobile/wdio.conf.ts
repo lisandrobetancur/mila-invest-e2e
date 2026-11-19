@@ -14,6 +14,7 @@ import { Cast, TakeNotes } from '@serenity-js/core';
 import type { WebdriverIOConfig } from '@serenity-js/webdriverio';
 
 import { env } from './src/config/env';
+import { Camarografo } from './src/reporte/Camarografo';
 import { restartApp } from './src/screenplay/interactions/native';
 
 export const config: WebdriverIOConfig = {
@@ -87,8 +88,9 @@ export const config: WebdriverIOConfig = {
             ],
             // Nada de `@serenity-js/web:Photographer`: para sacar la foto
             // pregunta por la ventana del navegador (`GET /window`), un
-            // comando que una sesión nativa de Appium no implementa. Las
-            // capturas las toma `Camarografo`, más abajo en este archivo.
+            // comando que una sesión nativa de Appium no implementa.
+            // `MILA_PHOTOS=all` fotografía cada interacción.
+            new Camarografo(env.photos === 'all' ? 'todas' : 'fallos'),
         ],
     },
 

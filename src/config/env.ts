@@ -22,6 +22,9 @@ const asSeed = (value: string | undefined): Seed =>
 const asPhotos = (value: string | undefined): Photos =>
     value === 'all' ? 'all' : 'failures';
 
+/** Sacar una foto por interacción cuesta tiempo: los techos se agrandan. */
+const conFotos = asPhotos(process.env.MILA_PHOTOS) === 'all';
+
 export const env = {
     /** Base de la app web bajo prueba. */
     baseUrl: process.env.BASE_URL ?? 'http://localhost:8080',
@@ -48,13 +51,18 @@ export const env = {
      * Timeouts, en milisegundos. Flutter web pinta sobre un canvas y
      * reconstruye el árbol semántico entre frames: las esperas son de
      * condición (`Wait.until`), nunca fijas, pero necesitan un techo.
+     *
+     * Con `MILA_PHOTOS=all` cada interacción paga una captura, así que el
+     * presupuesto se duplica: si no, un escenario largo como el registro se
+     * queda sin tiempo por el costo de fotografiarlo, no por un problema de
+     * la app.
      */
     timeouts: {
         /** Espera por un elemento o un estado dentro de una vista ya cargada. */
-        element: 15_000,
+        element: conFotos ? 30_000 : 15_000,
         /** Espera por un cambio de ruta o la carga inicial de la app. */
-        navigation: 30_000,
+        navigation: conFotos ? 60_000 : 30_000,
         /** Techo de cada interacción (click, escritura). */
-        interaction: 15_000,
+        interaction: conFotos ? 30_000 : 15_000,
     },
 } as const;

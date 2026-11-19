@@ -8,6 +8,7 @@
  * | `MILA_DEVICE` | `emulator-5554` | `adb` device bajo prueba |
  * | `MILA_PLATFORM_VERSION` | sin fijar | versión de Android, si hay varias |
  * | `APPIUM_HOST` / `APPIUM_PORT` | `127.0.0.1` / `4723` | servidor de Appium |
+ * | `MILA_PHOTOS` | `failures` | `all` saca una captura por interacción |
  * | `CI` | ausente | activa reintentos |
  */
 import { resolve } from 'node:path';
@@ -20,6 +21,14 @@ const apkPorDefecto = resolve(
     milaAppPath,
     'packages/apps/mila_invest_app/build/app/outputs/flutter-apk/app-debug.apk',
 );
+
+/** Cuándo saca capturas el `Camarografo`. */
+export type Photos = 'failures' | 'all';
+
+const asPhotos = (value: string | undefined): Photos => (value === 'all' ? 'all' : 'failures');
+
+/** Sacar una captura por interacción cuesta tiempo: los techos se agrandan. */
+const conFotos = asPhotos(process.env.MILA_PHOTOS) === 'all';
 
 export const env = {
     /** Raíz del repo `mila-invest-app`. */
@@ -48,15 +57,24 @@ export const env = {
     isCI: Boolean(process.env.CI),
 
     /**
+     * Capturas del reporte: `failures` (default) o `all`.
+     *
+     * Con `all` se fotografía cada interacción y el reporte queda con el paso
+     * a paso completo de cada escenario; cuesta tiempo y espacio, así que en
+     * CI y en el día a día conviene `failures`.
+     */
+    photos: asPhotos(process.env.MILA_PHOTOS),
+
+    /**
      * Timeouts, en milisegundos. Más holgados que en web: arrancar la app en
      * un emulador no se parece a recargar una página.
      */
     timeouts: {
         /** Espera por un elemento dentro de una vista ya cargada. */
-        element: 20_000,
+        element: conFotos ? 40_000 : 20_000,
         /** Espera por un cambio de pantalla o el arranque de la app. */
-        navigation: 60_000,
+        navigation: conFotos ? 90_000 : 60_000,
         /** Techo de cada interacción. */
-        interaction: 20_000,
+        interaction: conFotos ? 40_000 : 20_000,
     },
 } as const;
