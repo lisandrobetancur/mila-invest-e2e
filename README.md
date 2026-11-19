@@ -138,6 +138,38 @@ MILA_SEED=empty npx playwright test --grep @seed-empty
 
 Con la semilla `demo` (la de siempre) esos escenarios se saltan solos.
 
+## La suite mobile (Android)
+
+Los mismos escenarios, contra la app Android, con **Appium**: el runner es el
+de WebdriverIO y Serenity/JS aporta el Screenplay y el reporte. El contrato
+de ids es el mismo —en Android los `Semantics(identifier:)` de Flutter salen
+como `resource-id`—, así que las dos suites comparten
+`src/screenplay/ids/ids.generated.ts`.
+
+Hace falta un emulador o un teléfono conectado (`adb devices`) y el APK
+compilado desde el repo de la app:
+
+```bash
+flutter build apk --debug --dart-define=FAST_ANIMATIONS=true --dart-define=PRICE_REFRESH_SECONDS=0
+```
+
+```bash
+MILA_APP_PATH=../../dart/mila-invest-app npm run test:android
+```
+
+| Comando | Qué hace |
+|---|---|
+| `npm run test:android` | toda la suite mobile |
+| `npm run test:android:smoke` | solo `@smoke` |
+| `npm run report:android` | abre el reporte mobile |
+| `npm run typecheck:android` | tipos de la suite mobile |
+
+El reporte es el mismo de Serenity/JS pero **independiente**: la suite web
+escribe en `reports/serenity-js` y la mobile en `reports/serenity-js-mobile`.
+
+Lo que Android hace distinto —y lo que costó descubrir— está en
+[`docs/android-notes.md`](docs/android-notes.md).
+
 ## CI
 
 El workflow tiene dos jobs:

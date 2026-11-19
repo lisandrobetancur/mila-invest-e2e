@@ -47,6 +47,13 @@ export default tseslint.config(
         rules: { 'no-restricted-syntax': 'off' },
     },
     {
+        // WebdriverIO devuelve elementos "encadenables": se esperan con
+        // `await` como cualquier promesa, pero sus tipos no lo son, y la
+        // regla no sabe distinguirlos.
+        files: ['mobile/**/*.ts'],
+        rules: { '@typescript-eslint/await-thenable': 'off' },
+    },
+    {
         files: ['test/**/*.ts'],
         rules: {
             // Los specs encadenan tareas: las promesas se esperan en attemptsTo.
