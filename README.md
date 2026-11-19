@@ -1,4 +1,4 @@
-# mila-invest-e2e
+# mila-invest-ui-e2e
 
 Suite end-to-end **black-box** de [MILA Invest](https://github.com/lisandrobetancur/mila-invest-app):
 Playwright Test + patrón **Screenplay** de Serenity/JS, escenarios en Gherkin

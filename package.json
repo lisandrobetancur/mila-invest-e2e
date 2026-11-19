@@ -1,5 +1,5 @@
 {
-  "name": "mila-invest-e2e",
+  "name": "mila-invest-ui-e2e",
   "version": "0.1.0",
   "private": true,
   "description": "Suite end-to-end black-box de MILA Invest (Playwright + Serenity/JS Screenplay)",

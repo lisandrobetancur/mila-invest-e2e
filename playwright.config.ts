@@ -42,7 +42,7 @@ export default defineConfig<SerenityFixtures, SerenityWorkerFixtures>({
                             outputDirectory: './reports/serenity-js',
                             specDirectory: './test/specs',
                             title: 'MILA Invest · Web',
-                            projectName: 'mila-invest-e2e · web',
+                            projectName: 'mila-invest-ui-e2e · web',
                         },
                     ],
                 ],

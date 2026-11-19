@@ -50,7 +50,7 @@ jobs:
       - name: Checkout de la suite
         uses: actions/checkout@v4
         with:
-          path: mila-invest-e2e
+          path: mila-invest-ui-e2e
 
       - name: Checkout de la app
         uses: actions/checkout@v4
@@ -103,28 +103,28 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: mila-invest-e2e/package-lock.json
+          cache-dependency-path: mila-invest-ui-e2e/package-lock.json
 
       - name: Instalar dependencias
         if: steps.app.outputs.lista == 'true'
-        working-directory: mila-invest-e2e
+        working-directory: mila-invest-ui-e2e
         run: npm ci
 
       - name: Instalar Chromium
         if: steps.app.outputs.lista == 'true'
-        working-directory: mila-invest-e2e
+        working-directory: mila-invest-ui-e2e
         run: npx playwright install --with-deps chromium
 
       # Si la app cambió un identificador, la suite se entera acá.
       - name: Verificar los ids contra el contrato de la app
         if: steps.app.outputs.lista == 'true'
-        working-directory: mila-invest-e2e
+        working-directory: mila-invest-ui-e2e
         run: npm run ids:check
 
       # El `webServer` de Playwright levanta `serve_web.py` sobre el build.
       - name: Correr la suite
         if: steps.app.outputs.lista == 'true'
-        working-directory: mila-invest-e2e
+        working-directory: mila-invest-ui-e2e
         run: npm test
 
       # El reporte HTML lo genera la propia corrida (crew member), falle o no:
@@ -134,7 +134,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: serenity-js-report
-          path: mila-invest-e2e/reports/serenity-js
+          path: mila-invest-ui-e2e/reports/serenity-js
           retention-days: 14
 
       - name: Subir el reporte de Playwright
@@ -142,5 +142,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report
-          path: mila-invest-e2e/playwright-report
+          path: mila-invest-ui-e2e/playwright-report
           retention-days: 14

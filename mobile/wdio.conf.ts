@@ -84,7 +84,7 @@ export const config: WebdriverIOConfig = {
                     outputDirectory: './reports/serenity-js-mobile',
                     specDirectory: './mobile/spec',
                     title: 'MILA Invest · Mobile (Android)',
-                    projectName: 'mila-invest-e2e · android',
+                    projectName: 'mila-invest-ui-e2e · android',
                 },
             ],
             // Nada de `@serenity-js/web:Photographer`: para sacar la foto
