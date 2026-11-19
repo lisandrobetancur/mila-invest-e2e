@@ -78,7 +78,8 @@ lo hace CI.
 | `npm test` | toda la suite web, en los dos breakpoints |
 | `npm run test:smoke` | solo `@smoke` |
 | `npm run test:web:movil` / `test:web:escritorio` | un breakpoint a la vez |
-| `npm run report:web` | abre el reporte web de la última corrida |
+| `npm run test:web:full` | borra el reporte anterior, corre todo con fotos de cada paso y abre el reporte |
+| `npm run report:web` | abre el reporte web de la última corrida (http://127.0.0.1:8095) |
 | `npm run ids:sync` | regenera los ids desde el contrato de la app |
 | `npm run ids:check` | falla si los ids quedaron viejos (corre en CI) |
 | `npm run lint` / `typecheck` | ESLint y TypeScript |
@@ -111,6 +112,47 @@ MILA_PHOTOS=all npm test
 
 El reporte pasa de ~1 MB a ~80 MB y la corrida tarda unas cinco veces más,
 así que conviene dejarlo para cuando lo necesites.
+
+#### Corrida completa con reporte
+
+`test:web:full` y `test:android:full` hacen todo de una: borran el reporte
+anterior, corren la suite con `MILA_PHOTOS=all` y, terminen verdes o rojos,
+levantan el reporte y lo abren en el navegador (Ctrl+C lo cierra). Incluyen
+el escenario `@fallo-demo`, que falla a propósito para ver cómo se muestra
+un assert.
+
+```bash
+BASE_URL=http://127.0.0.1:8081 npm run test:web:full
+```
+
+```bash
+MILA_DEVICE=RF8R41GQYHF MILA_APP_PATH=../../dart/mila-invest-app npm run test:android:full
+```
+
+#### Solo una parte de los escenarios
+
+`MILA_GREP` corre solo los escenarios que tienen ese tag o ese texto en el
+nombre, en las dos suites y también con los scripts `:full`:
+
+```bash
+MILA_GREP=@mercado BASE_URL=http://127.0.0.1:8081 npm run test:web:full
+```
+
+```bash
+MILA_GREP="búsqueda sin resultados" MILA_DEVICE=RF8R41GQYHF MILA_APP_PATH=../../dart/mila-invest-app npm run test:android:full
+```
+
+Tags: `@smoke`, `@acceso`, `@mercado`, `@inversion`, `@dinero`,
+`@seguimiento`, `@plataforma`, `@fallo-demo`, `@seed-empty`.
+
+#### Segunda ejecución de los fallos
+
+`MILA_RETRIES` dice cuántas veces se vuelve a correr un escenario que falló
+(default: 1 en CI, 0 afuera). Vale para las dos suites:
+
+```bash
+MILA_RETRIES=1 BASE_URL=http://127.0.0.1:8081 npm run test:web:full
+```
 
 ## Los dos proyectos
 
@@ -163,7 +205,8 @@ MILA_APP_PATH=../../dart/mila-invest-app npm run test:android
 |---|---|
 | `npm run test:android` | toda la suite mobile |
 | `npm run test:android:smoke` | solo `@smoke` |
-| `npm run report:android` | abre el reporte de Android |
+| `npm run test:android:full` | borra el reporte anterior, corre todo con fotos de cada paso y abre el reporte |
+| `npm run report:android` | abre el reporte de Android (http://127.0.0.1:8096) |
 | `npm run typecheck:android` | tipos de la suite mobile |
 
 El reporte es el mismo de Serenity/JS pero **independiente**: la suite web

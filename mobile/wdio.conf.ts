@@ -92,6 +92,7 @@ export const config: WebdriverIOConfig = {
                     specDirectory: './mobile/spec',
                     title: 'MILA Invest · Mobile (Android)',
                     projectName: 'mila-invest-ui-e2e · android',
+                    ...(env.history ? { maxHistory: env.history } : {}),
                 },
             ],
             // Nada de `@serenity-js/web:Photographer`: para sacar la foto
@@ -114,6 +115,8 @@ export const config: WebdriverIOConfig = {
     mochaOpts: {
         ui: 'bdd',
         timeout: 180_000,
-        retries: env.isCI ? 1 : 0,
+        retries: env.retries,
+        // `MILA_GREP=@mercado` corre solo una parte (tag o texto del nombre).
+        ...(env.grep ? { grep: env.grep } : {}),
     },
 };

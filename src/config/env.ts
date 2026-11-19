@@ -7,6 +7,9 @@
  * | `MILA_APP_PATH` | `../mila-invest-app` | repo de la app (para `ids:sync`) |
  * | `MILA_SEED` | `demo` | semilla del backend falso del build bajo prueba |
  * | `MILA_PHOTOS` | `failures` | `all` saca una foto por interacción |
+ * | `MILA_GREP` | todos | corre solo los escenarios con ese tag o texto en el nombre |
+ * | `MILA_HISTORY` | todas | cuántas corridas guarda el reporte de Serenity |
+ * | `MILA_RETRIES` | `1` en CI, `0` afuera | cuántas veces se vuelve a correr un escenario que falló |
  * | `CI` | ausente | activa reintentos y un solo worker |
  */
 
@@ -21,6 +24,18 @@ const asSeed = (value: string | undefined): Seed =>
 
 const asPhotos = (value: string | undefined): Photos =>
     value === 'all' ? 'all' : 'failures';
+
+/** Un entero >= 1, o `undefined` si no viene o no es válido. */
+const asHistory = (value: string | undefined): number | undefined => {
+    const n = Number(value);
+    return value !== undefined && value !== '' && Number.isInteger(n) && n >= 1 ? n : undefined;
+};
+
+/** Un entero >= 0, o [porDefecto] si no viene o no es válido. */
+const asRetries = (value: string | undefined, porDefecto: number): number => {
+    const n = Number(value);
+    return value !== undefined && value !== '' && Number.isInteger(n) && n >= 0 ? n : porDefecto;
+};
 
 /** Sacar una foto por interacción cuesta tiempo: los techos se agrandan. */
 const conFotos = asPhotos(process.env.MILA_PHOTOS) === 'all';
@@ -46,6 +61,26 @@ export const env = {
 
     /** `true` dentro de CI. */
     isCI: Boolean(process.env.CI),
+
+    /**
+     * Reintentos de un escenario que falló: `MILA_RETRIES` (default 1 en CI,
+     * 0 afuera). Con `MILA_RETRIES=1` cada fallo se corre una segunda vez y
+     * el reporte muestra los dos intentos.
+     */
+    retries: asRetries(process.env.MILA_RETRIES, process.env.CI ? 1 : 0),
+
+    /**
+     * Cuántas corridas guarda el reporte de Serenity: `MILA_HISTORY`. Sin
+     * definir, todas (es lo que da el historial y las tendencias). Los
+     * scripts `:full` usan 1 si no se dice otra cosa: solo la última corrida.
+     */
+    history: asHistory(process.env.MILA_HISTORY),
+
+    /**
+     * Filtro de escenarios: `MILA_GREP`, un tag (`@mercado`) o parte del
+     * nombre (`búsqueda sin resultados`). Sin definir, corren todos.
+     */
+    grep: process.env.MILA_GREP || undefined,
 
     /**
      * Timeouts, en milisegundos. Flutter web pinta sobre un canvas y

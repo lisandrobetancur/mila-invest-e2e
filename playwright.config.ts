@@ -22,7 +22,9 @@ export default defineConfig<SerenityFixtures, SerenityWorkerFixtures>({
     // Los escenarios `@fallo-demo` fallan a propósito: sirven para mostrar
     // cómo se ve un fallo en el reporte, no para romper el CI.
     grepInvert: env.isCI ? /@fallo-demo/ : undefined,
-    retries: env.isCI ? 1 : 0,
+    // `MILA_GREP=@mercado` corre solo una parte (tag o texto del nombre).
+    grep: env.grep ? new RegExp(env.grep.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')) : undefined,
+    retries: env.retries,
     workers: env.isCI ? 2 : undefined,
     timeout: 90_000,
     expect: { timeout: env.timeouts.element },
@@ -46,6 +48,7 @@ export default defineConfig<SerenityFixtures, SerenityWorkerFixtures>({
                             specDirectory: './test/specs',
                             title: 'MILA Invest · Web',
                             projectName: 'mila-invest-ui-e2e · web',
+                            ...(env.history ? { maxHistory: env.history } : {}),
                         },
                     ],
                 ],
