@@ -115,8 +115,8 @@ así que conviene dejarlo para cuando lo necesites.
 
 #### Corrida completa con reporte
 
-`test:web:full` y `test:android:full` hacen todo de una: borran el reporte
-anterior, corren la suite con `MILA_PHOTOS=all` y, terminen verdes o rojos,
+`test:web:full` y `test:android:full` hacen todo de una: borran la carpeta
+del reporte anterior (salvo que pases `MILA_HISTORY`, que acumula corridas), corren la suite con `MILA_PHOTOS=all` y, terminen verdes o rojos,
 abren el `index.html` del reporte en el navegador por defecto. Incluyen
 el escenario `@fallo-demo`, que falla a propósito para ver cómo se muestra
 un assert.
