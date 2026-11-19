@@ -21,7 +21,7 @@ describe(Caracteristica('Vender acciones a mercado'), () => {
     const conSesion = [AbrirLaApp(), IniciarSesion.conLaCuentaDemo()];
 
     it(Escenario('vende una parte de su posición en ECOPETROL', '@smoke', '@inversion'), async ({ actorCalled }) => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor tiene 120 acciones de ECOPETROL', ...conSesion),
             Cuando('vende 10 acciones a mercado', VenderInstrumento.conId('ECOPETROL-CO').cantidad(10)),
             Entonces('ve la orden ejecutada', Ensure.that(SemanticText.of(OrderResult.status()), equals('Ejecutada'))),
@@ -36,7 +36,7 @@ describe(Caracteristica('Vender acciones a mercado'), () => {
     });
 
     it(Escenario('no puede vender más de lo que tiene', '@inversion'), async ({ actorCalled }) => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor está vendiendo ECOPETROL', ...conSesion, AbrirElTicket.deVenta('ECOPETROL-CO')),
             Cuando('pide vender 500 acciones', IndicarLaCantidad.de(500)),
             Entonces(

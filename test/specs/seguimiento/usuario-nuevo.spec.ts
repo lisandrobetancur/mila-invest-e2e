@@ -39,7 +39,7 @@ conSemillaVacia(Caracteristica('Empezar sin saldo ni inversiones'), () => {
     const conSesion = [AbrirLaApp(), IniciarSesion.conLaCuentaDemo()];
 
     it(Escenario('el inicio invita a hacer el primer depósito', '@seed-empty', '@seguimiento'), async ({ actorCalled }) => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor entró con una cuenta nueva', ...conSesion),
             Entonces(
                 've la invitación a depositar',
@@ -51,7 +51,7 @@ conSemillaVacia(Caracteristica('Empezar sin saldo ni inversiones'), () => {
     });
 
     it(Escenario('el portafolio invita a explorar el mercado', '@seed-empty', '@seguimiento'), async ({ actorCalled }) => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor entró con una cuenta nueva', ...conSesion),
             Cuando('abre su portafolio', IrALaTab.portafolio()),
             Entonces(
@@ -64,7 +64,7 @@ conSemillaVacia(Caracteristica('Empezar sin saldo ni inversiones'), () => {
     });
 
     it(Escenario('la actividad está vacía', '@seed-empty', '@seguimiento'), async ({ actorCalled }) => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor entró con una cuenta nueva', ...conSesion),
             Cuando('mira sus movimientos', VerLosMovimientos()),
             Entonces(
@@ -82,7 +82,7 @@ conSemillaVacia(Caracteristica('Empezar sin saldo ni inversiones'), () => {
     });
 
     it(Escenario('la billetera está sin saldo', '@seed-empty', '@dinero'), async ({ actorCalled }) => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor entró con una cuenta nueva', ...conSesion),
             Cuando('abre su billetera', AbrirLaBilletera()),
             Entonces(

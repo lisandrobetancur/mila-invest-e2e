@@ -10,7 +10,7 @@ import { LoginForm } from '../../../src/screenplay/ui/auth.ui';
 describe(Caracteristica('Iniciar sesión'), () => {
 
     it(Escenario('entra con la cuenta demo', '@smoke', '@acceso'), async ({ actorCalled }) => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor abrió MILA Invest', AbrirLaApp()),
             Cuando('inicia sesión con la cuenta demo', IniciarSesion.conLaCuentaDemo()),
             Entonces(
@@ -24,7 +24,7 @@ describe(Caracteristica('Iniciar sesión'), () => {
     });
 
     it(Escenario('no entra con una contraseña incorrecta', '@acceso'), async ({ actorCalled }) => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor abrió MILA Invest', AbrirLaApp()),
             Cuando('intenta entrar con una contraseña incorrecta', IniciarSesion.con(CuentaDemo.email, 'ContraseñaIncorrecta1!')),
             Entonces(

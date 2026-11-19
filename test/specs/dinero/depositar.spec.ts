@@ -26,7 +26,7 @@ describe(Caracteristica('Depositar dinero virtual'), () => {
     const conSesion = [AbrirLaApp(), IniciarSesion.conLaCuentaDemo()];
 
     it(Escenario('deposita un monto sugerido', '@smoke', '@dinero'), async ({ actorCalled }) => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor está en su billetera', ...conSesion, AbrirLaBilletera(), EsperarA(Wallet.withData())),
             Y(
                 'anota cuánto tiene en pesos colombianos',
@@ -47,7 +47,7 @@ describe(Caracteristica('Depositar dinero virtual'), () => {
     });
 
     it(Escenario('un monto en cero no se deposita', '@dinero'), async ({ actorCalled }) => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor está depositando en pesos colombianos', ...conSesion, AbrirElDeposito.en('COP')),
             Y(
                 'anota cuánto tiene',

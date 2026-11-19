@@ -26,7 +26,7 @@ describe(Caracteristica('Ajustar la app'), () => {
     const conSesion = [AbrirLaApp(), IniciarSesion.conLaCuentaDemo()];
 
     it(Escenario('cambia el idioma sin reiniciar y sin tocar el formato de los montos', '@smoke', '@plataforma'), async ({ actorCalled }) => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor inició sesión con la cuenta demo', ...conSesion, EsperarA(Home.withData())),
             Y('anota su valor total', notes<Notas>().set('totalEnEspanol', AmountValue.of(Home.total()))),
             Cuando('cambia el idioma a inglés', AbrirAjustes(), CambiarIdioma.a('en'), VolverDeAjustes()),
@@ -43,7 +43,7 @@ describe(Caracteristica('Ajustar la app'), () => {
     });
 
     it(Escenario('cambia el tema sin reiniciar', '@plataforma'), async ({ actorCalled }) => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor está en los ajustes', ...conSesion, AbrirAjustes()),
             Cuando('elige el tema oscuro', CambiarTema.a('dark')),
             Entonces(

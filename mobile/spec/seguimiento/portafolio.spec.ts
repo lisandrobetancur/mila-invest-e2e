@@ -9,7 +9,7 @@ import { Portfolio } from '../../src/screenplay/ui/portfolio.ui';
 describe(Caracteristica('Ver el portafolio'), () => {
 
     it(Escenario('muestra el total, el efectivo y lo invertido', '@smoke', '@seguimiento'), async () => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor inició sesión con la cuenta demo', AbrirLaApp(), IniciarSesion.conLaCuentaDemo()),
             Cuando('abre su portafolio', IrALaTab.portafolio()),
             Entonces(

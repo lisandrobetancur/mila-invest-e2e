@@ -10,7 +10,7 @@ import { Home } from '../../src/screenplay/ui/dashboard.ui';
 describe(Caracteristica('Iniciar sesión'), () => {
 
     it(Escenario('entra con la cuenta demo', '@smoke', '@acceso'), async () => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor abrió MILA Invest', AbrirLaApp()),
             Cuando('inicia sesión con la cuenta demo', IniciarSesion.conLaCuentaDemo()),
             Entonces('ve su saludo', Ensure.that(IsDisplayed.of(Home.greeting()), isTrue())),
@@ -23,7 +23,7 @@ describe(Caracteristica('Iniciar sesión'), () => {
     });
 
     it(Escenario('no entra con una contraseña incorrecta', '@acceso'), async () => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor abrió MILA Invest', AbrirLaApp()),
             Cuando(
                 'intenta entrar con una contraseña incorrecta',

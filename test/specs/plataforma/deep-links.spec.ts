@@ -15,7 +15,7 @@ import { InstrumentDetail } from '../../../src/screenplay/ui/market.ui';
 describe(Caracteristica('Abrir la app por un deep link'), () => {
 
     it(Escenario('un deep link sin sesión pasa por el login y vuelve al instrumento', '@smoke', '@plataforma'), async ({ actorCalled }) => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor abre el link de ISA sin tener sesión', AbrirLaRuta('/market/instrument/ISA-CO')),
             Entonces(
                 'la app le pide iniciar sesión',
@@ -33,7 +33,7 @@ describe(Caracteristica('Abrir la app por un deep link'), () => {
     });
 
     it(Escenario('un instrumento que no existe muestra "no encontrado"', '@plataforma'), async ({ actorCalled }) => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor abre el link de un instrumento inexistente', AbrirLaRuta('/market/instrument/NOPE-XX')),
             Cuando('inicia sesión con la cuenta demo', EsperarLaCargaDe(LoginForm.view()), IniciarSesion.conLaCuentaDemo()),
             Entonces(

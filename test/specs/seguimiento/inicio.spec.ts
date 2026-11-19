@@ -24,7 +24,7 @@ describe(Caracteristica('Ver el inicio'), () => {
     const conSesion = [AbrirLaApp(), IniciarSesion.conLaCuentaDemo()];
 
     it(Escenario('resume la cuenta y los que más se mueven', '@smoke', '@seguimiento'), async ({ actorCalled }) => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor inició sesión con la cuenta demo', ...conSesion),
             Entonces(
                 've el valor total de su cuenta',
@@ -42,7 +42,7 @@ describe(Caracteristica('Ver el inicio'), () => {
     });
 
     it(Escenario('el inicio se actualiza después de una compra', '@seguimiento'), async ({ actorCalled }) => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor inició sesión con la cuenta demo', ...conSesion, EsperarA(Home.withData())),
             Y('anota el valor total de su cuenta', notes<Notas>().set('totalAnterior', AmountValue.of(Home.total()))),
             Cuando(

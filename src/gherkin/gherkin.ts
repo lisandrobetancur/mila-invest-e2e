@@ -6,7 +6,7 @@
  * Dado/Cuando/Entonces como pasos de primer nivel del escenario.
  *
  * ```ts
- * await actorCalled('Camila').attemptsTo(
+ * await actorCalled('Licho').attemptsTo(
  *     Dado('que #actor inició sesión con la cuenta demo', IniciarSesion.conLaCuentaDemo()),
  *     Cuando('compra 2 acciones de ISA a mercado', ComprarInstrumento.conId('ISA-CO').cantidad(2)),
  *     Entonces('ve la orden ejecutada', Ensure.that(SemanticText.of(OrderResult.status()), equals('Ejecutada'))),

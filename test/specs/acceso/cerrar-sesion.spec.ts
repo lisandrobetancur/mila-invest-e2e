@@ -18,7 +18,7 @@ import { Settings } from '../../../src/screenplay/ui/settings.ui';
 describe(Caracteristica('Cerrar sesión'), () => {
 
     it(Escenario('cierra la sesión confirmando el diálogo', '@acceso'), async ({ actorCalled }) => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado(
                 'que #actor inició sesión con la cuenta demo',
                 AbrirLaApp(),
@@ -31,7 +31,7 @@ describe(Caracteristica('Cerrar sesión'), () => {
     });
 
     it(Escenario('puede arrepentirse y seguir dentro', '@acceso'), async ({ actorCalled }) => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado(
                 'que #actor inició sesión con la cuenta demo',
                 AbrirLaApp(),

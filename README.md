@@ -75,10 +75,10 @@ lo hace CI.
 
 | Comando | Qué hace |
 |---|---|
-| `npm test` | toda la suite, en `mobile-chromium` y `desktop-chromium` |
+| `npm test` | toda la suite web, en los dos breakpoints |
 | `npm run test:smoke` | solo `@smoke` |
-| `npm run test:mobile` / `test:desktop` | un breakpoint a la vez |
-| `npm run report` | abre el reporte HTML de la última corrida |
+| `npm run test:web:movil` / `test:web:escritorio` | un breakpoint a la vez |
+| `npm run report:web` | abre el reporte web de la última corrida |
 | `npm run ids:sync` | regenera los ids desde el contrato de la app |
 | `npm run ids:check` | falla si los ids quedaron viejos (corre en CI) |
 | `npm run lint` / `typecheck` | ESLint y TypeScript |
@@ -94,7 +94,7 @@ Lo genera la **propia corrida**: no hay un paso aparte, ni CLI de Java, ni
 open reports/serenity-js/index.html
 ```
 
-`npm run report` hace lo mismo pero sirviéndolo en `http://localhost:<puerto>`,
+`npm run report:web` hace lo mismo pero sirviéndolo en `http://localhost:<puerto>`,
 que es cómodo si lo querés ver desde otra máquina. Tiene la
 jerarquía capacidad → característica → escenario, el árbol de actividades de
 cada escenario con sus pasos Dado/Cuando/Entonces, las capturas, el historial
@@ -118,11 +118,13 @@ Los mismos escenarios corren en los dos breakpoints de la app:
 
 | Proyecto | Viewport | Qué cubre |
 |---|---|---|
-| `mobile-chromium` | 390 × 844 | bottom bar |
-| `desktop-chromium` | 1440 × 900 | rail lateral |
+| `web-movil` | 390 × 844 | bottom bar |
+| `web-escritorio` | 1440 × 900 | rail lateral |
 
 Los identificadores son los mismos en los dos, así que no hay un solo
-escenario duplicado.
+escenario duplicado. Se llaman `web-…` y no `mobile-chromium` a propósito:
+el teléfono de verdad es la suite de Android, y en el reporte no tienen que
+confundirse.
 
 ## Usuario vacío
 
@@ -161,7 +163,7 @@ MILA_APP_PATH=../../dart/mila-invest-app npm run test:android
 |---|---|
 | `npm run test:android` | toda la suite mobile |
 | `npm run test:android:smoke` | solo `@smoke` |
-| `npm run report:android` | abre el reporte mobile |
+| `npm run report:android` | abre el reporte de Android |
 | `npm run typecheck:android` | tipos de la suite mobile |
 
 El reporte es el mismo de Serenity/JS pero **independiente**: la suite web

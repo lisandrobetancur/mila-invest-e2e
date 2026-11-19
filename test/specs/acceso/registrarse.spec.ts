@@ -27,7 +27,7 @@ import { Home } from '../../../src/screenplay/ui/dashboard.ui';
 describe(Caracteristica('Crear una cuenta'), () => {
 
     it(Escenario('un usuario nuevo queda dentro de la app', '@acceso'), async ({ actorCalled }) => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor abrió MILA Invest', AbrirLaApp()),
             Cuando('crea una cuenta con sus datos', Registrarse.con(usuarioNuevo())),
             Entonces(
@@ -40,7 +40,7 @@ describe(Caracteristica('Crear una cuenta'), () => {
 
     it(Escenario('el país es obligatorio', '@acceso'), async ({ actorCalled }) => {
         const datos = usuarioNuevo();
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor está en el registro', AbrirLaApp(), AbrirElRegistro()),
             Cuando(
                 'completa todo menos el país',
@@ -64,7 +64,7 @@ describe(Caracteristica('Crear una cuenta'), () => {
     });
 
     it(Escenario('hay que aceptar el aviso de simulación', '@acceso'), async ({ actorCalled }) => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor está en el registro', AbrirLaApp(), AbrirElRegistro()),
             Cuando(
                 'completa todo sin aceptar el aviso',
@@ -80,7 +80,7 @@ describe(Caracteristica('Crear una cuenta'), () => {
     });
 
     it(Escenario('la contraseña tiene que cumplir los requisitos', '@acceso'), async ({ actorCalled }) => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor está en el registro', AbrirLaApp(), AbrirElRegistro()),
             Cuando(
                 'elige una contraseña demasiado corta',
@@ -106,7 +106,7 @@ describe(Caracteristica('Crear una cuenta'), () => {
 
         for (const ejemplo of ejemplos) {
             it(Escenario(`en ${ejemplo.pais} se pide ${ejemplo.nombre}`, '@acceso'), async ({ actorCalled }) => {
-                await actorCalled('Camila').attemptsTo(
+                await actorCalled('Licho').attemptsTo(
                     Dado('que #actor está en el registro', AbrirLaApp(), AbrirElRegistro()),
                     Cuando(`elige ${ejemplo.pais} como país`, CompletarElRegistro.con({ pais: ejemplo.pais })),
                     Entonces(

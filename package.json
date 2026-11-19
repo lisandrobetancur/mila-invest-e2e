@@ -9,18 +9,18 @@
   "scripts": {
     "test": "playwright test",
     "test:smoke": "playwright test --grep @smoke",
-    "test:mobile": "playwright test --project=mobile-chromium",
-    "test:desktop": "playwright test --project=desktop-chromium",
+    "test:web:movil": "playwright test --project=web-movil",
+    "test:web:escritorio": "playwright test --project=web-escritorio",
     "test:android": "wdio run mobile/wdio.conf.ts",
     "test:android:smoke": "wdio run mobile/wdio.conf.ts --mochaOpts.grep @smoke",
     "ids:sync": "tsx scripts/sync-ids.ts",
     "ids:check": "tsx scripts/sync-ids.ts --check",
-    "report": "html-reporter serve --dir ./reports/serenity-js --host 127.0.0.1 --open",
+    "report:web": "html-reporter serve --dir ./reports/serenity-js --host 127.0.0.1 --open",
+    "report:android": "html-reporter serve --dir ./reports/serenity-js-mobile --host 127.0.0.1 --open",
     "clean": "rimraf reports playwright-report test-results",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "typecheck:android": "tsc --noEmit -p mobile/tsconfig.json",
-    "report:android": "html-reporter serve --dir ./reports/serenity-js-mobile --host 127.0.0.1 --open"
+    "typecheck:android": "tsc --noEmit -p mobile/tsconfig.json"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",

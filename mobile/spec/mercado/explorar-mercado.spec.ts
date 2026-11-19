@@ -21,7 +21,7 @@ describe(Caracteristica('Explorar el mercado'), () => {
     const enElMercado = [AbrirLaApp(), IniciarSesion.conLaCuentaDemo(), AbrirElMercado()];
 
     it(Escenario('filtra por país', '@smoke', '@mercado'), async () => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor está en el mercado', ...enElMercado),
             Cuando('filtra por Perú', FiltrarInstrumentos.porPais('PE')),
             Entonces(
@@ -37,7 +37,7 @@ describe(Caracteristica('Explorar el mercado'), () => {
     });
 
     it(Escenario('abre un instrumento que está fuera de la pantalla', '@smoke', '@mercado'), async () => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor está en el mercado', ...enElMercado),
             Entonces(
                 'el último instrumento de la lista todavía no se ve',
@@ -55,7 +55,7 @@ describe(Caracteristica('Explorar el mercado'), () => {
     });
 
     it(Escenario('abre el detalle de un instrumento', '@mercado'), async () => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor inició sesión con la cuenta demo', AbrirLaApp(), IniciarSesion.conLaCuentaDemo()),
             Cuando('abre ISA desde el mercado', AbrirInstrumento.conId('ISA-CO')),
             Entonces('ve el ticker', Ensure.that(SemanticText.of(InstrumentDetail.ticker()), equals('ISA'))),
@@ -68,7 +68,7 @@ describe(Caracteristica('Explorar el mercado'), () => {
     });
 
     it(Escenario('una búsqueda sin resultados ofrece limpiar los filtros', '@mercado'), async () => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor está en el mercado', ...enElMercado),
             Cuando('busca algo que no existe', FiltrarInstrumentos.buscando('zzz')),
             Entonces(

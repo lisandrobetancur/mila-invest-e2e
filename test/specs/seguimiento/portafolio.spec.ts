@@ -11,7 +11,7 @@ describe(Caracteristica('Ver el portafolio'), () => {
     const conSesion = [AbrirLaApp(), IniciarSesion.conLaCuentaDemo()];
 
     it(Escenario('muestra el total, el efectivo y lo invertido', '@smoke', '@seguimiento'), async ({ actorCalled }) => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor inició sesión con la cuenta demo', ...conSesion),
             Cuando('abre su portafolio', IrALaTab.portafolio()),
             Entonces(
@@ -32,7 +32,7 @@ describe(Caracteristica('Ver el portafolio'), () => {
     });
 
     it(Escenario('muestra una línea por cada posición', '@seguimiento'), async ({ actorCalled }) => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor inició sesión con la cuenta demo', ...conSesion),
             Cuando('abre su portafolio', IrALaTab.portafolio()),
             Entonces(

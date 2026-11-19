@@ -22,7 +22,7 @@ describe(Caracteristica('Ver la actividad'), () => {
     const conSesion = [AbrirLaApp(), IniciarSesion.conLaCuentaDemo()];
 
     it(Escenario('la compra y su comisión quedan en los movimientos', '@smoke', '@seguimiento'), async ({ actorCalled }) => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado(
                 'que #actor compró 1 acción de ISA',
                 ...conSesion,
@@ -45,7 +45,7 @@ describe(Caracteristica('Ver la actividad'), () => {
     });
 
     it(Escenario('el historial muestra la orden rechazada de la cuenta demo', '@seguimiento'), async ({ actorCalled }) => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor inició sesión con la cuenta demo', ...conSesion),
             Cuando('mira sus órdenes rechazadas', VerLasOrdenes(), TapOn.element(OrderStatusFilter.RECHAZADAS())),
             Entonces(

@@ -17,7 +17,7 @@ import { Shell } from '../../../src/screenplay/ui/shell.ui';
 describe(Caracteristica('Rutas que no existen'), () => {
 
     it(Escenario('una ruta desconocida muestra "no encontrado"', '@plataforma'), async ({ actorCalled }) => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor abre una ruta que no existe', AbrirLaRuta('/una-ruta-que-no-existe')),
             Cuando('inicia sesión con la cuenta demo', EsperarLaCargaDe(LoginForm.view()), IniciarSesion.conLaCuentaDemo()),
             Entonces(

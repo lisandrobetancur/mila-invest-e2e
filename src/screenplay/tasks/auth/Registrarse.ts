@@ -72,7 +72,7 @@ export const Registrarse = {
 /** Datos válidos de un usuario nuevo, con correo y documento únicos. */
 export const usuarioNuevo = (seed = Date.now()): Required<DatosDeRegistro> => ({
     pais: 'CO',
-    nombre: 'Camila Prueba',
+    nombre: 'Licho Prueba',
     email: `camila.${seed}@milainvest.app`,
     tipoDeDocumento: 'CC',
     documento: `10${String(seed).slice(-8)}`,

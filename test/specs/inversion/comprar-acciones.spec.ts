@@ -21,7 +21,7 @@ describe(Caracteristica('Comprar acciones a mercado'), () => {
     const conSesion = [AbrirLaApp(), IniciarSesion.conLaCuentaDemo()];
 
     it(Escenario('compra con saldo suficiente', '@smoke', '@inversion'), async ({ actorCalled }) => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor inició sesión con la cuenta demo', ...conSesion),
             Cuando('compra 2 acciones de ISA a mercado', ComprarInstrumento.conId('ISA-CO').cantidad(2)),
             Entonces('ve la orden ejecutada', Ensure.that(SemanticText.of(OrderResult.status()), equals('Ejecutada'))),
@@ -35,7 +35,7 @@ describe(Caracteristica('Comprar acciones a mercado'), () => {
     });
 
     it(Escenario('ve la comisión y el total antes de confirmar', '@inversion'), async ({ actorCalled }) => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado(
                 'que #actor está armando una compra de 2 acciones de ISA',
                 ...conSesion,

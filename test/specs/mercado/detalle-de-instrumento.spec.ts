@@ -17,7 +17,7 @@ describe(Caracteristica('Ver el detalle de un instrumento'), () => {
     const conSesion = [AbrirLaApp(), IniciarSesion.conLaCuentaDemo()];
 
     it(Escenario('abre el detalle desde la lista', '@smoke', '@mercado'), async ({ actorCalled }) => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor inició sesión con la cuenta demo', ...conSesion),
             Cuando('abre ISA desde el mercado', AbrirInstrumento.conId('ISA-CO')),
             Entonces('la URL es la del instrumento', Ensure.that(CurrentPath(), equals('/market/instrument/ISA-CO'))),
@@ -29,7 +29,7 @@ describe(Caracteristica('Ver el detalle de un instrumento'), () => {
     });
 
     it(Escenario('cambia el rango del gráfico', '@mercado'), async ({ actorCalled }) => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor está viendo ECOPETROL', ...conSesion, AbrirInstrumento.conId('ECOPETROL-CO')),
             Cuando('cambia el rango del gráfico a un mes', CambiarElRangoDelGrafico.a('1M')),
             Entonces(
@@ -42,7 +42,7 @@ describe(Caracteristica('Ver el detalle de un instrumento'), () => {
     });
 
     it(Escenario('ve su posición en un instrumento que ya tiene', '@mercado'), async ({ actorCalled }) => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor inició sesión con la cuenta demo', ...conSesion),
             Cuando('abre ECOPETROL, donde ya tiene posición', AbrirInstrumento.conId('ECOPETROL-CO')),
             Entonces(

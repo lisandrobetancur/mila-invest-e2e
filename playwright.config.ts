@@ -1,9 +1,13 @@
 /**
  * Playwright Test + Serenity/JS.
  *
- * Dos proyectos, uno por breakpoint de la app (mobile < 768 px, web ancho).
- * Los mismos specs corren en los dos: los identificadores semánticos no
- * cambian con el layout.
+ * Dos proyectos, uno por breakpoint de la app (teléfono < 768 px y pantalla
+ * ancha). Los mismos specs corren en los dos: los identificadores semánticos
+ * no cambian con el layout.
+ *
+ * Los proyectos se llaman `web-movil` y `web-escritorio` —y no
+ * `mobile-chromium`— para que en el reporte no se confundan con la suite
+ * mobile de verdad, que corre sobre Android con Appium y vive en `mobile/`.
  */
 import { defineConfig, devices } from '@playwright/test';
 import type { SerenityFixtures, SerenityWorkerFixtures } from '@serenity-js/playwright-test';
@@ -37,7 +41,8 @@ export default defineConfig<SerenityFixtures, SerenityWorkerFixtures>({
                         {
                             outputDirectory: './reports/serenity-js',
                             specDirectory: './test/specs',
-                            title: 'MILA Invest · E2E',
+                            title: 'MILA Invest · Web',
+                            projectName: 'mila-invest-e2e · web',
                         },
                     ],
                 ],
@@ -47,7 +52,7 @@ export default defineConfig<SerenityFixtures, SerenityWorkerFixtures>({
 
     use: {
         baseURL: env.baseUrl,
-        defaultActorName: 'Camila',
+        defaultActorName: 'Licho',
         // Por defecto, fotos solo de los fallos: una por interacción cuesta
         // tiempo. `MILA_PHOTOS=all` las saca todas y deja el reporte con el
         // paso a paso completo de cada escenario.
@@ -71,7 +76,7 @@ export default defineConfig<SerenityFixtures, SerenityWorkerFixtures>({
 
     projects: [
         {
-            name: 'mobile-chromium',
+            name: 'web-movil',
             use: {
                 browserName: 'chromium',
                 viewport: { width: 390, height: 844 },
@@ -81,7 +86,7 @@ export default defineConfig<SerenityFixtures, SerenityWorkerFixtures>({
             },
         },
         {
-            name: 'desktop-chromium',
+            name: 'web-escritorio',
             use: {
                 ...devices['Desktop Chrome'],
                 viewport: { width: 1440, height: 900 },

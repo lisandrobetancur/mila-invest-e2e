@@ -14,11 +14,11 @@ import { CountryFilter, MarketList } from '../../../src/screenplay/ui/market.ui'
 
 describe(Caracteristica('Explorar el mercado'), () => {
 
-    // Antecedentes: Camila entró con la cuenta demo y está en el mercado.
+    // Antecedentes: Licho entró con la cuenta demo y está en el mercado.
     const enElMercado = [AbrirLaApp(), IniciarSesion.conLaCuentaDemo(), AbrirElMercado()];
 
     it(Escenario('filtra por país y la URL lo refleja', '@smoke', '@mercado'), async ({ actorCalled }) => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor está en el mercado', ...enElMercado),
             Cuando('filtra por Perú', FiltrarInstrumentos.porPais('PE')),
             Entonces('la URL refleja el filtro', Ensure.that(QueryParam.named('country'), equals('PE'))),
@@ -32,7 +32,7 @@ describe(Caracteristica('Explorar el mercado'), () => {
     });
 
     it(Escenario('filtra por tipo y la URL lo refleja', '@mercado'), async ({ actorCalled }) => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor está en el mercado', ...enElMercado),
             Cuando('filtra por ETFs', FiltrarInstrumentos.porTipo('ETF')),
             Entonces('la URL refleja el tipo', Ensure.that(QueryParam.named('type'), equals('ETF'))),
@@ -45,7 +45,7 @@ describe(Caracteristica('Explorar el mercado'), () => {
     });
 
     it(Escenario('una búsqueda sin resultados ofrece limpiar los filtros', '@mercado'), async ({ actorCalled }) => {
-        await actorCalled('Camila').attemptsTo(
+        await actorCalled('Licho').attemptsTo(
             Dado('que #actor está en el mercado', ...enElMercado),
             Cuando('busca algo que no existe', FiltrarInstrumentos.buscando('zzz')),
             Entonces(
