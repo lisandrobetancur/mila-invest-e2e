@@ -1,0 +1,109 @@
+name: E2E
+
+on:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      app_ref:
+        description: Rama o tag de mila-invest-app contra el que correr
+        required: false
+        default: main
+
+permissions:
+  contents: read
+
+env:
+  FLUTTER_VERSION: 3.41.9
+  MILA_APP_PATH: ../mila-invest-app
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout de la suite
+        uses: actions/checkout@v4
+        with:
+          path: mila-invest-e2e
+
+      - name: Checkout de la app
+        uses: actions/checkout@v4
+        with:
+          repository: lisandrobetancur/mila-invest-app
+          ref: ${{ github.event.inputs.app_ref || 'main' }}
+          path: mila-invest-app
+
+      # --- App bajo prueba -------------------------------------------------
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Resolver el workspace de la app
+        working-directory: mila-invest-app
+        run: |
+          dart pub global activate melos 7.3.0
+          melos bootstrap
+
+      # Los flags son el contrato con la suite: sin ENABLE_SEMANTICS no hay
+      # identificadores, y sin FAST_ANIMATIONS la suite espera de más.
+      - name: Compilar la app para web
+        working-directory: mila-invest-app/packages/apps/mila_invest_app
+        run: |
+          flutter build web --release \
+            --dart-define=ENABLE_SEMANTICS=true \
+            --dart-define=FAST_ANIMATIONS=true \
+            --dart-define=PRICE_REFRESH_SECONDS=0
+
+      # --- Suite -----------------------------------------------------------
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: mila-invest-e2e/package-lock.json
+
+      - name: Instalar dependencias
+        working-directory: mila-invest-e2e
+        run: npm ci
+
+      - name: Instalar Chromium
+        working-directory: mila-invest-e2e
+        run: npx playwright install --with-deps chromium
+
+      # Si la app cambió un identificador, la suite se entera acá.
+      - name: Verificar los ids contra el contrato de la app
+        working-directory: mila-invest-e2e
+        run: npm run ids:check
+
+      - name: Lint
+        working-directory: mila-invest-e2e
+        run: npm run lint
+
+      - name: Typecheck
+        working-directory: mila-invest-e2e
+        run: npm run typecheck
+
+      # El `webServer` de Playwright levanta `serve_web.py` sobre el build.
+      - name: Correr la suite
+        working-directory: mila-invest-e2e
+        run: npm test
+
+      # El reporte HTML lo genera la propia corrida (crew member), falle o no:
+      # no hay un paso aparte ni hace falta Java.
+      - name: Subir el reporte de Serenity/JS
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: serenity-js-report
+          path: mila-invest-e2e/reports/serenity-js
+          retention-days: 14
+
+      - name: Subir el reporte de Playwright
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: mila-invest-e2e/playwright-report
+          retention-days: 14
