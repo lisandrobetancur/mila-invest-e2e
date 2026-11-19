@@ -45,7 +45,7 @@ describe(Caracteristica('Depositar dinero virtual'), () => {
         );
     });
 
-    it(Escenario('un monto en cero no se deposita', '@smoke', '@dinero'), async () => {
+    it(Escenario('un monto en cero no se deposita', '@dinero'), async () => {
         await actorCalled('Licho').attemptsTo(
             Dado('que #actor está depositando en pesos colombianos', ...conSesion, AbrirElDeposito.en('COP')),
             Cuando('intenta depositar cero', IndicarElMonto.de('0'), EnviarElDeposito()),

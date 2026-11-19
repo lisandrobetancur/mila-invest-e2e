@@ -21,7 +21,7 @@ describe(Caracteristica('Ver la actividad'), () => {
 
     const conSesion = [AbrirLaApp(), IniciarSesion.conLaCuentaDemo()];
 
-    it(Escenario('la compra y su comisión quedan en los movimientos', '@smoke', '@seguimiento'), async ({ actorCalled }) => {
+    it(Escenario('la compra y su comisión quedan en los movimientos', '@seguimiento'), async ({ actorCalled }) => {
         await actorCalled('Licho').attemptsTo(
             Dado(
                 'que #actor compró 1 acción de ISA',

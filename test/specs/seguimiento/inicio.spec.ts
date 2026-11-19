@@ -41,7 +41,7 @@ describe(Caracteristica('Ver el inicio'), () => {
         );
     });
 
-    it(Escenario('el inicio se actualiza después de una compra', '@smoke', '@seguimiento'), async ({ actorCalled }) => {
+    it(Escenario('el inicio se actualiza después de una compra', '@seguimiento'), async ({ actorCalled }) => {
         await actorCalled('Licho').attemptsTo(
             Dado('que #actor inició sesión con la cuenta demo', ...conSesion, EsperarA(Home.withData())),
             Y('anota el valor total de su cuenta', notes<Notas>().set('totalAnterior', AmountValue.of(Home.total()))),

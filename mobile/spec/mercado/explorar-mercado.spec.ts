@@ -20,7 +20,7 @@ describe(Caracteristica('Explorar el mercado'), () => {
     // vuelve a entrar. Es el precio del aislamiento en un dispositivo.
     const enElMercado = [AbrirLaApp(), IniciarSesion.conLaCuentaDemo(), AbrirElMercado()];
 
-    it(Escenario('filtra por país', '@smoke', '@mercado'), async () => {
+    it(Escenario('filtra por país', '@mercado'), async () => {
         await actorCalled('Licho').attemptsTo(
             Dado('que #actor está en el mercado', ...enElMercado),
             Cuando('filtra por Perú', FiltrarInstrumentos.porPais('PE')),
@@ -36,7 +36,7 @@ describe(Caracteristica('Explorar el mercado'), () => {
         );
     });
 
-    it(Escenario('abre un instrumento que está fuera de la pantalla', '@smoke', '@mercado'), async () => {
+    it(Escenario('abre un instrumento que está fuera de la pantalla', '@mercado'), async () => {
         await actorCalled('Licho').attemptsTo(
             Dado('que #actor está en el mercado', ...enElMercado),
             Entonces(
@@ -54,7 +54,7 @@ describe(Caracteristica('Explorar el mercado'), () => {
         );
     });
 
-    it(Escenario('abre el detalle de un instrumento', '@smoke', '@mercado'), async () => {
+    it(Escenario('abre el detalle de un instrumento', '@mercado'), async () => {
         await actorCalled('Licho').attemptsTo(
             Dado('que #actor inició sesión con la cuenta demo', AbrirLaApp(), IniciarSesion.conLaCuentaDemo()),
             Cuando('abre ISA desde el mercado', AbrirInstrumento.conId('ISA-CO')),
