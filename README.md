@@ -138,6 +138,21 @@ MILA_SEED=empty npx playwright test --grep @seed-empty
 
 Con la semilla `demo` (la de siempre) esos escenarios se saltan solos.
 
+## CI
+
+El workflow tiene dos jobs:
+
+- **Lint y tipos**: no depende de nada externo y siempre tiene que estar en
+  verde.
+- **Escenarios**: compila `mila-invest-app` y corre la suite. Si el ref de la
+  app todavía no tiene el código (falta `pubspec.yaml` o
+  `docs/semantics-ids.md`), el job **avisa y se saltea** en vez de fallar: un
+  rojo permanente por una dependencia que no existe no informa nada. El aviso
+  queda visible en el PR como *warning*.
+
+Cuando la app esté publicada, ese job corre entero: `ids:check`, la suite en
+los dos breakpoints y los dos reportes como artifacts.
+
 ## Documentación
 
 - [`docs/architecture.md`](docs/architecture.md): las capas, las reglas de
