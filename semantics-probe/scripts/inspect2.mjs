@@ -1,0 +1,13 @@
+import { chromium } from '@playwright/test';
+const b = await chromium.launch();
+const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 1, locale: 'es' });
+await ctx.addInitScript(`localStorage.setItem('flutter.mila_invest.onboarding_seen','true')`);
+const p = await ctx.newPage();
+await p.goto('http://127.0.0.1:8081/'); await p.waitForURL(/login/);
+await p.locator('[flt-semantics-identifier="auth_login_demo_button"]').click();
+await p.locator('[flt-semantics-identifier="auth_login_submit_button"]').click();
+await p.waitForURL(/home/);
+await p.evaluate(() => { history.pushState({}, '', '/market'); dispatchEvent(new PopStateEvent('popstate')); });
+await p.waitForTimeout(1500);
+console.log(await p.evaluate(() => [...document.querySelectorAll('flt-semantics')].filter(e => e.getBoundingClientRect().top < 300).map(e => { const r = e.getBoundingClientRect(); return `${Math.round(r.top)}-${Math.round(r.bottom)} x${Math.round(r.left)} ${e.getAttribute('role')||''} ${e.getAttribute('flt-semantics-identifier')||''} tap=${e.hasAttribute('flt-tappable')} text="${(e.textContent||'').trim().slice(0,40)}" aria="${(e.getAttribute('aria-label')||'').slice(0,30)}"`; }).join('\n')));
+await b.close();

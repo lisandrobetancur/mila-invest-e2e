@@ -1,0 +1,11 @@
+import { chromium } from '@playwright/test';
+const b = await chromium.launch();
+const ctx = await b.newContext({ viewport: { width: 390, height: 600 }, deviceScaleFactor: 1, locale: 'es' });
+await ctx.addInitScript(`localStorage.setItem('flutter.mila_invest.onboarding_seen','true')`);
+const p = await ctx.newPage();
+await p.goto('http://127.0.0.1:8081/'); await p.waitForURL(/login/); await p.waitForTimeout(1000);
+const dump = () => p.evaluate(() => [...document.querySelectorAll('flt-semantics')].map(e => { const r = e.getBoundingClientRect(); const own = [...e.childNodes].filter(n => n.nodeType === 3).map(n => n.textContent).join('').trim(); return `${Math.round(r.top)}-${Math.round(r.bottom)} x${Math.round(r.left)} ${e.getAttribute('role')||''} ${e.getAttribute('flt-semantics-identifier')||''} tap=${e.hasAttribute('flt-tappable')} kids=${e.children.length} pe=${e.style.pointerEvents} own="${own.slice(0,40)}" aria="${(e.getAttribute('aria-label')||'').slice(0,40)}"`; }).join('\n'));
+await p.evaluate(() => { history.pushState({}, '', '/register'); dispatchEvent(new PopStateEvent('popstate')); });
+await p.waitForTimeout(1500);
+console.log(await p.evaluate(() => [...document.querySelectorAll('flt-semantics')].filter(e => { const r = e.getBoundingClientRect(); return Math.round(r.top) === 72; }).map(e => e.outerHTML.slice(0, 500)).join('\n')));
+await b.close();

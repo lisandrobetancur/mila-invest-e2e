@@ -6,5 +6,8 @@ blob-report/
 .DS_Store
 *.log
 
+# Resultados de las sondas de semantics (capturas, traces, JSONL: varios GB)
+semantics-probe/results/
+
 # Permisos locales de Claude Code (por máquina)
 .claude/settings.local.json

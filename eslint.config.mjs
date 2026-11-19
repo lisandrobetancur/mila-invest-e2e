@@ -9,6 +9,9 @@ export default tseslint.config(
             'reports/**',
             'playwright-report/**',
             'test-results/**',
+            // Sondas de medición de semantics: paquete aparte, con su propio
+            // tsconfig, que lee el árbol por selector a propósito.
+            'semantics-probe/**',
             'src/screenplay/ids/ids.generated.ts',
         ],
     },

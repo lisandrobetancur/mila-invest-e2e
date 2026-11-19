@@ -1,0 +1,35 @@
+import { chromium } from '@playwright/test';
+const b = await chromium.launch();
+console.log('chromium', b.version());
+const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 1, locale: 'es' });
+const p = await ctx.newPage();
+const t0 = Date.now();
+await p.goto('http://localhost:8081/');
+await p.locator('[flt-semantics-identifier="onboarding_skip_button"]').click();
+await p.waitForURL('**/login');
+console.log('login at', Date.now()-t0);
+const html = await p.locator('[flt-semantics-identifier="auth_login_email_field"]').evaluate(e => e.outerHTML);
+console.log('EMAIL FIELD', html.slice(0, 800));
+const pw = await p.locator('[flt-semantics-identifier="auth_login_password_field"]').evaluate(e => e.outerHTML);
+console.log('PW FIELD', pw.slice(0, 1200));
+const tg = await p.locator('[flt-semantics-identifier="auth_login_password_toggle"]').evaluate(e => e.outerHTML);
+console.log('TOGGLE', tg.slice(0, 600));
+console.log('active', await p.evaluate(() => { const a = document.activeElement; return a.tagName + ' ' + a.className + ' ' + (a.getAttribute('flt-semantics-identifier')||''); }));
+await p.locator('[flt-semantics-identifier="auth_login_demo_button"]').click();
+await p.locator('[flt-semantics-identifier="auth_login_submit_button"]').click();
+await p.waitForURL('**/home');
+console.log('home at', Date.now()-t0);
+await p.evaluate(() => { history.pushState({}, '', '/wallet'); dispatchEvent(new PopStateEvent('popstate', { state: history.state })); });
+await p.waitForTimeout(1500);
+console.log('url after pushState', p.url(), await p.locator('[flt-semantics-identifier="wallet_accounts_view"]').count());
+// back in history
+await p.goBack(); await p.waitForTimeout(1000);
+console.log('after back', p.url());
+// OFF
+const p2 = await (await b.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 1, locale: 'es' })).newPage();
+await p2.goto('http://localhost:8082/');
+await p2.waitForTimeout(4000);
+console.log('OFF url', p2.url(), 'flt-semantics?', await p2.evaluate(() => !!document.querySelector('flt-semantics')));
+console.log('OFF placeholder', await p2.evaluate(() => { const e = document.querySelector('flt-semantics-placeholder'); return e ? e.outerHTML : null; }));
+console.log('OFF body', await p2.evaluate(() => document.body.innerHTML.slice(0, 1500)));
+await b.close();
