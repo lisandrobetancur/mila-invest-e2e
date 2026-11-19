@@ -19,6 +19,9 @@ export default defineConfig<SerenityFixtures, SerenityWorkerFixtures>({
     outputDir: './test-results',
     fullyParallel: true,
     forbidOnly: env.isCI,
+    // Los escenarios `@fallo-demo` fallan a propósito: sirven para mostrar
+    // cómo se ve un fallo en el reporte, no para romper el CI.
+    grepInvert: env.isCI ? /@fallo-demo/ : undefined,
     retries: env.isCI ? 1 : 0,
     workers: env.isCI ? 2 : undefined,
     timeout: 90_000,

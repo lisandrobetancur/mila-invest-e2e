@@ -7,6 +7,7 @@ import {
     AbrirElTicket,
     AbrirLaApp,
     EsperarA,
+    EsperarAQueDiga,
     IndicarLaCantidad,
     IniciarSesion,
     IrALaTab,
@@ -41,7 +42,7 @@ describe(Caracteristica('Vender acciones a mercado'), () => {
             Cuando('pide vender 500 acciones', IndicarLaCantidad.de(500)),
             Entonces(
                 've que no puede vender más de lo que tiene',
-                EsperarA(OrderTicket.quantityError()),
+                EsperarAQueDiga(OrderTicket.quantityError(), 'vender'),
                 Ensure.that(SemanticText.of(OrderTicket.quantityError()), includes('vender')),
             ),
             Y('sigue en el ticket', Ensure.that(IsDisplayed.of(OrderTicket.view()), isTrue())),
