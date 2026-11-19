@@ -74,6 +74,19 @@ escenario seguía contra el detalle del instrumento—.
 Lo que se usa es `mobile: performEditorAction` con `done`, que es el botón de
 confirmar del propio teclado: lo baja y deja la pantalla donde estaba.
 
+En un teléfono físico eso no alcanzó. `performEditorAction` cambia al
+teclado de Appium, espera 500 ms y manda el texto `/done/`, que ese teclado
+traduce a la acción. En un Samsung (SM-A315G, Android 12) el cambio a veces
+tarda más: el texto le llega al teclado de Samsung, el campo queda `zzz/done`
+y el teclado sigue arriba tapando los controles de abajo. Aislado: 3 de 8 en
+el teléfono, 0 de 5 en el emulador. Además puede dar verdes falsos, porque el
+`/done` se cuela en el campo sin que nadie lo note.
+
+Por eso la sesión arranca con `appium:hideKeyboard: true`: Appium deja su
+teclado invisible activo toda la sesión y no hay cambio de teclado por campo
+(8 de 8 en el mismo teléfono). Al cerrar la sesión el teclado del teléfono
+vuelve a ser el de siempre.
+
 ## 6. Hay que desplazarse, y por eso existe `Desplazarse`
 
 En un teléfono, media pantalla de contenido empieza fuera de la vista: las

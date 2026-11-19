@@ -35,6 +35,13 @@ export const config: WebdriverIOConfig = {
             'appium:appPackage': env.appPackage,
             'appium:appActivity': env.appActivity,
             'appium:autoGrantPermissions': true,
+            // Teclado invisible de Appium durante toda la sesión. Sin esto,
+            // `performEditorAction` cambia de teclado en cada campo y espera
+            // 500 ms; en un Samsung el cambio a veces tarda más, el teclado
+            // del teléfono recibe el texto `/done/` (el campo queda `zzz/done`)
+            // y no se baja, tapando los controles de abajo. Medido en un
+            // SM-A315G: 3 de 8 sin esto, 0 de 8 con esto.
+            'appium:hideKeyboard': true,
             'appium:newCommandTimeout': 300,
             // Cada escenario arranca la app de cero: el backend falso vive en
             // memoria, así que reinstalar no hace falta pero reiniciar sí.
