@@ -1,0 +1,38 @@
+{
+  "name": "mila-invest-e2e",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Suite end-to-end black-box de MILA Invest (Playwright + Serenity/JS Screenplay)",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "playwright test",
+    "test:smoke": "playwright test --grep @smoke",
+    "test:mobile": "playwright test --project=mobile-chromium",
+    "test:desktop": "playwright test --project=desktop-chromium",
+    "ids:sync": "tsx scripts/sync-ids.ts",
+    "ids:check": "tsx scripts/sync-ids.ts --check",
+    "report": "html-reporter serve --dir ./reports/serenity-js --host 127.0.0.1 --open",
+    "clean": "rimraf reports playwright-report test-results",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@playwright/test": "1.64.1",
+    "@serenity-js/assertions": "3.49.0",
+    "@serenity-js/console-reporter": "3.49.0",
+    "@serenity-js/core": "3.49.0",
+    "@serenity-js/html-reporter": "3.49.0",
+    "@serenity-js/playwright": "3.49.0",
+    "@serenity-js/playwright-test": "3.49.0",
+    "@serenity-js/web": "3.49.0",
+    "@types/node": "26.6.6",
+    "eslint": "10.15.0",
+    "rimraf": "6.1.4",
+    "tsx": "4.23.15",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.73.0"
+  }
+}

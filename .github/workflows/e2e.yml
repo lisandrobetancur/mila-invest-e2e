@@ -1,0 +1,146 @@
+name: E2E
+
+on:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      app_ref:
+        description: Rama o tag de mila-invest-app contra el que correr
+        required: false
+        default: main
+
+permissions:
+  contents: read
+
+env:
+  FLUTTER_VERSION: 3.41.9
+  MILA_APP_PATH: ../mila-invest-app
+
+jobs:
+  # Lo que se puede verificar sin la app: no depende de otro repo y siempre
+  # tiene que estar en verde.
+  estatico:
+    name: Lint y tipos
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run lint
+
+      - run: npm run typecheck
+
+  # La suite necesita la app compilada. Mientras `mila-invest-app` no publique
+  # su código, este job avisa y se saltea en vez de fallar: un rojo permanente
+  # por una dependencia que todavía no existe no le dice nada a nadie.
+  e2e:
+    name: Escenarios
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout de la suite
+        uses: actions/checkout@v4
+        with:
+          path: mila-invest-e2e
+
+      - name: Checkout de la app
+        uses: actions/checkout@v4
+        with:
+          repository: lisandrobetancur/mila-invest-app
+          ref: ${{ github.event.inputs.app_ref || 'main' }}
+          path: mila-invest-app
+
+      # El contrato con la app son dos archivos: el workspace que se compila y
+      # el inventario de identificadores. Si no están, no hay nada que probar.
+      - name: ¿La app está publicada?
+        id: app
+        run: |
+          if [ -f mila-invest-app/pubspec.yaml ] && [ -f mila-invest-app/docs/semantics-ids.md ]; then
+            echo "lista=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "lista=false" >> "$GITHUB_OUTPUT"
+            echo "::warning title=E2E omitido::mila-invest-app@${{ github.event.inputs.app_ref || 'main' }} no tiene la app (falta pubspec.yaml o docs/semantics-ids.md). Los escenarios no corrieron."
+          fi
+
+      # --- App bajo prueba -------------------------------------------------
+      - uses: subosito/flutter-action@v2
+        if: steps.app.outputs.lista == 'true'
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Resolver el workspace de la app
+        if: steps.app.outputs.lista == 'true'
+        working-directory: mila-invest-app
+        run: |
+          dart pub global activate melos 7.3.0
+          melos bootstrap
+
+      # Los flags son el contrato con la suite: sin ENABLE_SEMANTICS no hay
+      # identificadores, y sin FAST_ANIMATIONS la suite espera de más.
+      - name: Compilar la app para web
+        if: steps.app.outputs.lista == 'true'
+        working-directory: mila-invest-app/packages/apps/mila_invest_app
+        run: |
+          flutter build web --release \
+            --dart-define=ENABLE_SEMANTICS=true \
+            --dart-define=FAST_ANIMATIONS=true \
+            --dart-define=PRICE_REFRESH_SECONDS=0
+
+      # --- Suite -----------------------------------------------------------
+      - uses: actions/setup-node@v4
+        if: steps.app.outputs.lista == 'true'
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: mila-invest-e2e/package-lock.json
+
+      - name: Instalar dependencias
+        if: steps.app.outputs.lista == 'true'
+        working-directory: mila-invest-e2e
+        run: npm ci
+
+      - name: Instalar Chromium
+        if: steps.app.outputs.lista == 'true'
+        working-directory: mila-invest-e2e
+        run: npx playwright install --with-deps chromium
+
+      # Si la app cambió un identificador, la suite se entera acá.
+      - name: Verificar los ids contra el contrato de la app
+        if: steps.app.outputs.lista == 'true'
+        working-directory: mila-invest-e2e
+        run: npm run ids:check
+
+      # El `webServer` de Playwright levanta `serve_web.py` sobre el build.
+      - name: Correr la suite
+        if: steps.app.outputs.lista == 'true'
+        working-directory: mila-invest-e2e
+        run: npm test
+
+      # El reporte HTML lo genera la propia corrida (crew member), falle o no:
+      # no hay un paso aparte ni hace falta Java.
+      - name: Subir el reporte de Serenity/JS
+        if: always() && steps.app.outputs.lista == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: serenity-js-report
+          path: mila-invest-e2e/reports/serenity-js
+          retention-days: 14
+
+      - name: Subir el reporte de Playwright
+        if: always() && steps.app.outputs.lista == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: mila-invest-e2e/playwright-report
+          retention-days: 14
