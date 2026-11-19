@@ -36,6 +36,53 @@ export const inputInside = (node: Locator): Locator =>
     node.locator('input, textarea').first();
 
 /**
+ * Espera a que el campo esté de verdad en edición: que su `<input>` tenga el
+ * foco y lo conserve durante [estableMs]. Devuelve `false` si el foco no
+ * llega en [timeout] o si llega y se va (entonces hay que volver a tocar).
+ *
+ * Con semantics forzado, Flutter 3.41.9 tiene dos problemas que esto cubre
+ * (medidos en `semantics-probe/`, sondas A y E):
+ *
+ * - **Las primeras teclas se pierden.** El navegador enfoca el `<input>`
+ *   antes de que el engine le instale los listeners; lo que se escribe en
+ *   ese hueco se pisa (flutter/flutter#194186, sin arreglo). Esperar unos
+ *   frames con el foco quieto alcanzó: 5 de 5, contra 0 de 5 sin esperar.
+ * - **El foco se va al re-tocar un campo** después de tocar un control
+ *   vecino: queda unos 75 ms en el `<input>` y se va a `BODY`
+ *   (flutter/flutter#192792 y relacionados). No vuelve solo: hay que volver
+ *   a tocar. Por eso la ventana de estabilidad es más larga que esos 75 ms.
+ */
+export const esperarCampoActivo = (
+    node: Locator,
+    { estableMs = 200, timeout = 1_500 }: { estableMs?: number; timeout?: number } = {},
+): Promise<boolean> =>
+    node
+        .evaluate(
+            (host, { estableMs, timeout }) =>
+                new Promise<boolean>((resolve) => {
+                    const t0 = performance.now();
+                    let desde: number | null = null;
+                    const tick = (): void => {
+                        const input = host.querySelector('input, textarea');
+                        const ahora = performance.now();
+                        if (input && document.activeElement === input) {
+                            desde ??= ahora;
+                            if (ahora - desde >= estableMs) return resolve(true);
+                        } else if (desde !== null) {
+                            // Tuvo el foco y lo perdió: no va a volver solo.
+                            return resolve(false);
+                        }
+                        if (ahora - t0 > timeout) return resolve(false);
+                        requestAnimationFrame(tick);
+                    };
+                    requestAnimationFrame(tick);
+                }),
+            { estableMs, timeout },
+        )
+        // El nodo se reconstruyó en el medio: tratarlo como foco perdido.
+        .catch(() => false);
+
+/**
  * Toca el centro del bounding box con el mouse.
  *
  * No pasa por las comprobaciones de accionabilidad de Playwright, así que
